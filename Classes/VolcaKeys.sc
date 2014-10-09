@@ -5,6 +5,7 @@
 //
 // * Supply a Function instead of a String as LFO in map method. Use SynthDef.wrap.
 //
+// * Add midi channel arg in creation method
 
 VolcaKeys {
 
