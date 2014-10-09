@@ -37,40 +37,40 @@ VolcaKeys {
         );
     }
 
-    map {|param, lfo, lo=0, hi=1|
+    map {|parameter, lfo, lo=0, hi=1|
         server.makeBundle(nil, {
-            param.do {|p|
-                var x = {
-                    SendReply.kr(Impulse.kr(poll), ("/"++p).asSymbol, lfo.interpret.range(lo*127,hi*127));
+            parameter.do {|param|
+                var func = {
+                    SendReply.kr(Impulse.kr(poll), ("/"++param).asSymbol, lfo.interpret.range(lo*127,hi*127));
                 };
-                OSCdef(p, {|msg| 
+                OSCdef(param, {|msg| 
                     var cc = msg[3];
-                    midiOut.control(0, midiCCs[p], cc.round(1));
-                }, p);
-                instances.put(p, x.play);
+                    midiOut.control(0, midiCCs[param], cc.round(1));
+                }, param);
+                instances.put(param, func.play);
             };
         });
     }
 
-    unmap {|param|
+    unmap {|parameter|
         server.makeBundle(nil, {
-            param.do {|p|
-                OSCdef(p).free;
-                instances[p].free;
+            parameter.do {|param|
+                OSCdef(param).free;
+                instances[param].free;
             };
         });
     }
 
     clear {
         server.makeBundle(nil, {
-            instances.keysValuesDo {|key, syn| 
-                OSCdef(key).free;
-                syn.free 
+            instances.keysValuesDo {|param, synth| 
+                OSCdef(param).free;
+                synth.free; 
             };
         });
     }
 
-    getCC {|param|
-        ^midiCCs[param] ?? { "Unkown parameter: %\n".postf(param) };
+    getCC {|parameter|
+        ^midiCCs[parameter] ?? { "Unkown parameter: %\n".postf(parameter) };
     }
 }
