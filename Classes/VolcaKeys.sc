@@ -1,6 +1,6 @@
-// TODO: 
+// TODO:
 //
-// * optimize "map" method when chaining multiple parameters..  
+// * optimize "map" method when chaining multiple parameters..
 // but how can we know if a parameter has already been mapped?
 //
 // * Supply a Function instead of a String as LFO in map method. Use SynthDef.wrap.
@@ -49,7 +49,7 @@ VolcaKeys {
 
                 instances[param] !? { this.unmap(param) };
 
-                OSCdef(param, {|msg| 
+                OSCdef(param, {|msg|
                     var cc = msg[3];
                     midiOut.control(0, midiCCs[param], cc.round(1));
                 }, param);
@@ -70,10 +70,11 @@ VolcaKeys {
 
     clear {
         server.makeBundle(nil, {
-            instances.keysValuesDo {|param, synth| 
+            instances.keysValuesDo {|param, synth|
                 OSCdef(param).free;
-                synth.free; 
+                synth.free;
             };
+            instances = ();
         });
     }
 
