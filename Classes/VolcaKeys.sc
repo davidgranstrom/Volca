@@ -1,4 +1,10 @@
-// TODO: optimize "map" method when chaining multiple parameters..  
+// TODO: 
+//
+// * optimize "map" method when chaining multiple parameters..  
+// but how can we know if a parameter has already been mapped?
+//
+// * Supply a Function instead of a String as LFO in map method. Use SynthDef.wrap.
+//
 
 VolcaKeys {
 
