@@ -43,6 +43,9 @@ VolcaKeys {
                 var func = {
                     SendReply.kr(Impulse.kr(poll), ("/"++param).asSymbol, lfo.interpret.range(lo*127,hi*127));
                 };
+
+                instances[param] !? { this.unmap(param) };
+
                 OSCdef(param, {|msg| 
                     var cc = msg[3];
                     midiOut.control(0, midiCCs[param], cc.round(1));
