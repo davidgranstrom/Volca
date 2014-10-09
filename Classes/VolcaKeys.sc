@@ -31,18 +31,20 @@ VolcaKeys {
         );
     }
 
-    map {|param, lfo, lo=0, hi=1|
-        server.makeBundle(nil, {
-            param.do {|p|
-                var x = {
-                    SendReply.kr(Impulse.kr(poll), ("/"++p).asSymbol, lfo.interpret.range(lo*127,hi*127));
-                };
-                OSCdef(p, {|msg| 
-                    var cc = msg[3];
-                    midiOut.control(0, midiCCs[p], cc.round(1));
-                }, p);
-                instances.put(p, x.play);
+    map {|parameter, lfo, lo=0, hi=1|
+        var name = if(parameter.isArray) { parameter.join.asSymbol; } { parameter; };
+        var func = {
+            SendReply.kr(Impulse.kr(poll), ("/"++name).asSymbol, lfo.interpret.range(lo*127,hi*127));
+        };
+        OSCdef(name, {|msg| 
+            var cc = msg[3];
+            parameter.do {|param|
+                midiOut.control(0, midiCCs[param], cc.round(1));
             };
+        }, name);
+        server.makeBundle(nil, {
+            instances[name] !? { this.unmap(name) };
+            instances.put(name, func.play);
         });
     }
 
