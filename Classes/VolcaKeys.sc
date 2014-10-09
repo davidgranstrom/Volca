@@ -41,7 +41,9 @@ VolcaKeys {
         server.makeBundle(nil, {
             parameter.do {|param|
                 var func = {
-                    SendReply.kr(Impulse.kr(poll), ("/"++param).asSymbol, lfo.interpret.range(lo*127,hi*127));
+                    var val = if(lfo.isFunction) { SynthDef.wrap(lfo) } { lfo.interpret };
+                    val = val.range(lo*127,hi*127);
+                    SendReply.kr(Impulse.kr(poll), ("/"++param).asSymbol, val);
                 };
 
                 instances[param] !? { this.unmap(param) };
