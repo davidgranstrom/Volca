@@ -62,6 +62,7 @@ VolcaKeys {
             parameter.do {|param|
                 OSCdef(param).free;
                 instances[param].free;
+                instances[param] = nil;
             };
         });
     }
