@@ -1,11 +1,8 @@
-// TODO:
-//
-// * optimize "map" method when chaining multiple parameters..
-// but how can we know if a parameter has already been mapped?
-//
-// * Supply a Function instead of a String as LFO in map method. Use SynthDef.wrap.
-//
-// * Add midi channel arg in creation method
+// ===========================================================================
+// Title		 : VolcaKeys
+// Description	 : Map LFO's to Korg Volca Keys MIDI CCs
+// Copyright (c) : David Granstrom 2014 
+// ===========================================================================
 
 VolcaKeys {
 
@@ -78,3 +75,11 @@ VolcaKeys {
         });
     }
 }
+
+// TODO:
+//
+// * optimize "map" method to only use one synth/OSCdef when chaining multiple .
+// parameters to the same LFO We still want to have granular control for each  .
+// parameter i.e. we want to be able to unmap a single parameter even though   .
+// they are chained.                                                           .
+//
