@@ -9,11 +9,11 @@
 
 VolcaKeys {
 
-    var midiOut, poll, server;
-    var midiCCs, instances;
+    var midiOut, channel, pollTime, server;
+    var <midiCCs, instances;
 
-    *new {|aMidiOut, pollTime=30, server|
-        ^super.newCopyArgs(aMidiOut, pollTime, server ? Server.default).init;
+    *new {|aMidiOut, channel=0, pollTime=30, server|
+        ^super.newCopyArgs(aMidiOut, channel, pollTime, server ? Server.default).init;
     }
 
     init {
@@ -44,14 +44,14 @@ VolcaKeys {
                 var func = {
                     var val = if(lfo.isFunction) { SynthDef.wrap(lfo) } { lfo.interpret };
                     val = val.range(lo*127,hi*127);
-                    SendReply.kr(Impulse.kr(poll), ("/"++param).asSymbol, val);
+                    SendReply.kr(Impulse.kr(pollTime), ("/"++param).asSymbol, val);
                 };
 
                 instances[param] !? { this.unmap(param) };
 
                 OSCdef(param, {|msg|
                     var cc = msg[3];
-                    midiOut.control(0, midiCCs[param], cc.round(1));
+                    midiOut.control(channel, midiCCs[param], cc.round(1));
                 }, param);
                 instances.put(param, func.play);
             };
