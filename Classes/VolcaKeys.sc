@@ -10,7 +10,7 @@
 VolcaKeys {
 
     var midiOut, channel, pollTime, server;
-    var <midiCCs, instances;
+    var <controls, instances;
 
     *new {|aMidiOut, channel=0, pollTime=30, server|
         ^super.newCopyArgs(aMidiOut, channel, pollTime, server ? Server.default).init;
@@ -18,7 +18,7 @@ VolcaKeys {
 
     init {
         instances = ();
-        midiCCs   = (
+        controls  = (
             'portamento'       :  5,
             'expression'       :  11,
             'voice'            :  40,
@@ -51,7 +51,7 @@ VolcaKeys {
 
                 OSCdef(param, {|msg|
                     var cc = msg[3];
-                    midiOut.control(channel, midiCCs[param], cc.round(1));
+                    midiOut.control(channel, controls[param], cc.round(1));
                 }, param);
                 instances.put(param, func.play);
             };
@@ -76,9 +76,5 @@ VolcaKeys {
             };
             instances = ();
         });
-    }
-
-    getCC {|parameter|
-        ^midiCCs[parameter] ?? { "Unkown parameter: %\n".postf(parameter) };
     }
 }
