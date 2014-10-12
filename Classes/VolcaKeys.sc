@@ -9,30 +9,74 @@ VolcaKeys {
     var midiOut, channel, pollTime, server;
     var <controls, instances;
 
-    *new {|aMidiOut, channel=0, pollTime=30, server|
-        ^super.newCopyArgs(aMidiOut, channel, pollTime, server ? Server.default).init;
+    *new {|device, aMidiOut, channel=0, pollTime=30, server|
+        ^super.newCopyArgs(aMidiOut, channel, pollTime, server ? Server.default).init(device);
     }
 
-    init {
+    init {|device|
         instances = ();
-        controls  = (
-            'portamento'       :  5,
-            'expression'       :  11,
-            'voice'            :  40,
-            'octave'           :  41,
-            'detune'           :  42,
-            'vco_eg_int'       :  43,
-            'cutoff'           :  44,
-            'vcf_eg_int'       :  45,
-            'lfo_rate'         :  46,
-            'lfo_pitch_int'    :  47,
-            'lfo_cutoff_int'   :  48,
-            'eg_attack'        :  49,
-            'eg_decay/release' :  50,
-            'eg_sustain'       :  51,
-            'delay_time'       :  52,
-            'delay_feedback'   :  53,
-        );
+        controls  = switch(device)
+        { 'keys' } {
+            (
+                'portamento'       : 5,
+                'expression'       : 11,
+                'voice'            : 40,
+                'octave'           : 41,
+                'detune'           : 42,
+                'vco eg int'       : 43,
+                'cutoff'           : 44,
+                'vcf eg int'       : 45,
+                'lfo rate'         : 46,
+                'lfo pitch int'    : 47,
+                'lfo cutoff int'   : 48,
+                'eg attack'        : 49,
+                'eg decay/release' : 50,
+                'eg sustain'       : 51,
+                'delay time'       : 52,
+                'delay feedback'   : 53,
+            )
+        }
+        { 'bass' } {
+            (
+                'slide time'       : 5,
+                'expression'       : 11,
+                'octave'           : 40,
+                'lfo rate'         : 41,
+                'lfo int'          : 42,
+                'vco pitch 1'      : 43,
+                'vco pitch 2'      : 44,
+                'vco pitch 3'      : 45,
+                'eg attack'        : 46,
+                'eg decay/release' : 47,
+                'cutoff eg int'    : 48,
+                'gate time'        : 49,
+            )
+        }
+        { 'beats' } {
+            (
+                'kick'             : 40,
+                'snare'            : 41,
+                'lo tom'           : 42,
+                'hi tom'           : 43,
+                'cl hat'           : 44,
+                'op hat'           : 45,
+                'clap'             : 46,
+                'claves'           : 47,
+                'agogo'            : 48,
+                'crash'            : 49,
+                'clap PCM'         : 50,
+                'calves PCM'       : 51,
+                'agogo PCM'        : 52,
+                'crash PCM'        : 53,
+                'stutter time'     : 54,
+                'stutter depth'    : 55,
+                'tom decay'        : 56,
+                'closed hat decay' : 57,
+                'open hat decay'   : 58,
+                'hat grain'        : 59,
+            )
+        }
+        { "Device not supported!".throw };
     }
 
     map {|parameter, lfo, lo=0, hi=1|
