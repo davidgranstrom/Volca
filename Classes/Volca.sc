@@ -1,10 +1,10 @@
 // ===========================================================================
-// Title         : VolcaKeys
-// Description   : Map LFO's to Korg Volca Keys MIDI CCs
+// Title         : Volca
+// Description   : Map LFO's to the Korg Volca series synthesizers
 // Copyright (c) : David Granstrom 2014
 // ===========================================================================
 
-VolcaKeys {
+Volca {
 
     var midiOut, channel, pollTime, server;
     var <controls, instances;
@@ -146,8 +146,7 @@ VolcaKeys {
 
 // TODO:
 //
-// * optimize "map" method to only use one synth/OSCdef when chaining multiple .
-// parameters to the same LFO We still want to have granular control for each  .
-// parameter i.e. we want to be able to unmap a single parameter even though   .
-// they are chained.                                                           .
-//
+// * optimize "map" method to only use one synth/OSCdef when chaining multiple
+// parameters to the same LFO. We still want to have granular control for each
+// parameter i.e. we want to be able to unmap a single parameter even though
+// they are chained.
