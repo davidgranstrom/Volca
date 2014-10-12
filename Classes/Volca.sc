@@ -66,7 +66,7 @@ Volca {
                 'agogo'            : 48,
                 'crash'            : 49,
                 'clap PCM'         : 50,
-                'calves PCM'       : 51,
+                'claves PCM'       : 51,
                 'agogo PCM'        : 52,
                 'crash PCM'        : 53,
                 'stutter time'     : 54,
