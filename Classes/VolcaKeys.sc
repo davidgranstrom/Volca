@@ -1,7 +1,7 @@
 // ===========================================================================
-// Title		 : VolcaKeys
-// Description	 : Map LFO's to Korg Volca Keys MIDI CCs
-// Copyright (c) : David Granstrom 2014 
+// Title         : VolcaKeys
+// Description   : Map LFO's to Korg Volca Keys MIDI CCs
+// Copyright (c) : David Granstrom 2014
 // ===========================================================================
 
 VolcaKeys {
