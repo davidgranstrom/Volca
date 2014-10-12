@@ -14,6 +14,7 @@ VolcaKeys {
     }
 
     init {|device|
+        if(server.serverRunning.not) { "Server must be booted".throw };
         instances = ();
         controls  = switch(device)
         { 'keys' } {
@@ -80,7 +81,7 @@ VolcaKeys {
     }
 
     map {|parameter, lfo, lo=0, hi=1|
-        server.makeBundle(nil, {
+        var mapFunc = {
             parameter.do {|param|
                 var func = {
                     var val = if(lfo.isFunction) { SynthDef.wrap(lfo) } { lfo.interpret };
@@ -94,19 +95,30 @@ VolcaKeys {
                     var cc = msg[3];
                     midiOut.control(channel, controls[param], cc.round(1));
                 }, param);
+
                 instances.put(param, func.play);
             };
-        });
+        };
+        if(this.validate(parameter)) {
+            server.makeBundle(nil, mapFunc);
+        } {
+            this.showError(parameter);
+        }
     }
 
     unmap {|parameter|
-        server.makeBundle(nil, {
+        var unmapFunc = {
             parameter.do {|param|
                 OSCdef(param).free;
                 instances[param].free;
                 instances[param] = nil;
             };
-        });
+        };
+        if(this.validate(parameter)) {
+            server.makeBundle(nil, unmapFunc);
+        } {
+            this.showError(parameter);
+        }
     }
 
     clear {
@@ -117,6 +129,18 @@ VolcaKeys {
             };
             instances = ();
         });
+    }
+
+    validate {|parameter|
+        ^controls.atAll([ parameter ].flat).select {|x| x.isNil }.isEmpty;
+    }
+
+    showError {|parameter|
+        if(parameter.isArray.not) {
+            "'%' is not a valid parameter!".format(parameter).warn;
+        } {
+            "Parameter array % contains an invalid parameter!".format(parameter).warn;
+        }
     }
 }
 
